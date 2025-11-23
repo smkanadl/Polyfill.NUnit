@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches:
+       - '*'
+  pull_request:
+    branches: ['main','develop']
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  # Git metadata used by Directory.Build.props for VersionSuffix
+  GitBranch: ${{ github.ref_name }}
+  GitCount: ${{ github.run_number }}
+
+jobs:
+  test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Restore
+        run: |
+          dotnet restore src/Polyfill.NUnit.slnx
+      - name: Build
+        run: |
+          dotnet build src/Polyfill.NUnit.slnx --no-restore
+      - name: Test
+        run: |
+          dotnet test  src/Polyfill.NUnit.slnx --no-build --logger "trx;LogFileName=test-results.trx" --results-directory TestResults
+      - name: Publish Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults
+
+  pack:
+    name: Package
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref_type == 'branch' && (github.ref_name == 'main' || github.ref_name == 'develop') || github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Restore
+        run: |
+          dotnet restore src/Polyfill.NUnit.slnx
+      - name: Build (Pack)
+        run: |
+          dotnet pack src/Polyfill.NUnit.slnx --no-restore -c Release -o ./.artifacts
+      - name: Upload Package Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nupkg
+          path: ./.artifacts/*.nupkg
+
+  publish_nuget:
+    name: Publish NuGet
+    needs: pack
+    runs-on: ubuntu-latest
+    if: github.ref_type == 'branch' && (github.ref_name == 'main' || github.ref_name == 'develop')
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: nupkg
+          path: ./.artifacts
+      - name: Publish to NuGet
+        run: |
+            dotnet nuget push ./.artifacts/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate

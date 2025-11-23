@@ -1,0 +1,9 @@
+# C# and VB files
+[*.{cs,vb}]
+
+# CA1051 Do not declare visible instance fields -> We allow this in test code because the code is not published and used anywhere.
+dotnet_diagnostic.CA1051.severity = suggestion
+# CA1707 Remove the underscores from member name -> The test case name convention uses Func_Conditions_Result convention
+dotnet_diagnostic.CA1707.severity = none
+# CS3016: Arrays as attribute arguments is not CLS-compliant
+dotnet_diagnostic.CS3016.severity = suggestion

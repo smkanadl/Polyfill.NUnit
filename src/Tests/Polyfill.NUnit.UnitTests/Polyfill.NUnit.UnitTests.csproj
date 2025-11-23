@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>NUnit.Framework</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Polyfill.NUnit\Polyfill.NUnit.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,16 @@
+<Project>
+
+  <PropertyGroup>
+    <BaseVersion>1.0.0</BaseVersion>
+    <PackageValidationBaselineVersion>1.0.0</PackageValidationBaselineVersion>
+
+    <GitCount Condition="'$(GitCount)' == '' ">0</GitCount>
+    <GitBranch Condition="'$(GitBranch)' == '' ">local</GitBranch>
+
+    <VersionPrefix>$(BaseVersion)</VersionPrefix>
+    <VersionSuffix Condition="'$(GitBranch)' != 'master'">$([System.Text.RegularExpressions.Regex]::Replace($(GitBranch), "[^0-9a-zA-Z]+", "-")).$(GitCount)</VersionSuffix>
+    <Copyright>Copyright © smkanadl 2025-$([System.DateTime]::Now.Year)</Copyright>
+
+  </PropertyGroup>
+
+</Project>

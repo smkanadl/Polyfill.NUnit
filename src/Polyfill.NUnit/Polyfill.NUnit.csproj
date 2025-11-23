@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>A package to polyfill some modern NUnit4+ features in a source-compatible way for NUnit3.</Description>
+    <RootNamespace>NUnit.Framework</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="[3.14, )" />
+  </ItemGroup>
+
+</Project>

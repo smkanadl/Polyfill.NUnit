@@ -1,0 +1,51 @@
+<Project>
+
+  <Import Project="../Directory.Build.props" />
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <DisablePackageBaselineValidation>true</DisablePackageBaselineValidation>
+    <LangVersion>14.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>10.0-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <DebugType>embedded</DebugType>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <ContinuousIntegrationBuild>$(CI)</ContinuousIntegrationBuild>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BaseSolutionPath>$(MSBuildThisFileDirectory)</BaseSolutionPath>
+
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+    <ArtifactsPath>$(BaseSolutionPath)../build/</ArtifactsPath>
+
+    <!-- Use locked restore on CI server for reproducible package stuff -->
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RestoreLockedMode>$(CI)</RestoreLockedMode>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None CopyToOutputDirectory="Never" Include="$(BaseSolutionPath)../README.md" Pack="true" Visible="false" PackagePath="/"/>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://dev.azure.com/acvt/Common.NET</PackageProjectUrl>
+    <PackageTags>Polyfill NUnit Testing</PackageTags>
+    <Authors>smkanadl</Authors>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+</Project>
