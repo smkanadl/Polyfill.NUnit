@@ -75,7 +75,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: nupkg
-          path: ${{ github.workspace }}/build/package/*/*.nupkg
+          path: ${{ github.workspace }}/build/package/*/*
 
   publish_nuget:
     name: Publish NuGet
@@ -91,7 +91,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: nupkg
-          path: ./.artifacts
+          path: ${{ github.workspace }}
       - name: NuGet login
         uses: NuGet/login@v1
         id: login
@@ -99,4 +99,4 @@ jobs:
             user: smkanadl
       - name: Publish to NuGet
         run: |
-            dotnet nuget push /artifacts/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --skip-duplicate
+            dotnet nuget push ${{ github.workspace }}/*/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --skip-duplicate
