@@ -91,8 +91,7 @@ jobs:
         uses: NuGet/login@v1
         id: login
         with:
-            # Secret is your NuGet username
-            user: ${{ secrets.NUGET_USER }}
+            user: smkanadl
       - name: Publish to NuGet
         run: |
             dotnet nuget push /artifacts/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --skip-duplicate
