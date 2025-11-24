@@ -18,10 +18,9 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
-    <DebugType>embedded</DebugType>
+    <DebugType>portable</DebugType>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <ContinuousIntegrationBuild>$(CI)</ContinuousIntegrationBuild>
-    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -37,6 +36,7 @@
 
   <ItemGroup>
     <None CopyToOutputDirectory="Never" Include="$(BaseSolutionPath)../README.md" Pack="true" Visible="false" PackagePath="/"/>
+    <None CopyToOutputDirectory="Never" Include="$(BaseSolutionPath)../LICENSE" Pack="true" Visible="false" PackagePath="/"/>
   </ItemGroup>
 
   <PropertyGroup>
@@ -46,6 +46,7 @@
     <PackageTags>Polyfill NUnit Testing</PackageTags>
     <Authors>smkanadl</Authors>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
 </Project>
