@@ -3,7 +3,7 @@
 namespace NUnit.Framework
 {
     /// <summary>
-    /// Provides extension methods for the <see cref="Is"/> class to polyfill constraints.
+    ///  Provides extension methods for the <see cref="Is"/> class to polyfill constraints.
     /// </summary>
     public static class IsExtensions
     {
