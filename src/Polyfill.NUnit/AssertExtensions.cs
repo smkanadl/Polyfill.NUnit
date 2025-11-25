@@ -66,7 +66,7 @@ namespace NUnit.Framework
 
             _context.DecrementMultipleAssertLevel();
 
-            if (_context is { MultipleAssertLevel: 0, CurrentResult: { PendingFailures: > 0 } })
+            if (_context is { MultipleAssertLevel: 0, CurrentResult.PendingFailures: > 0 })
             {
                 _context.CurrentResult.RecordTestCompletion();
                 if (_context.CurrentResult.AssertionResults.Count > _assertionCountWhenEnteringScope)
