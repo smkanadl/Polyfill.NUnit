@@ -16,6 +16,7 @@ Focused, source-compatible polyfills that mimic NUnit 4 surface area where:
 
 Currently included:
 * `Is.EqualTo<T>(T[])` generic array overload on `Is`, enabling collection expression usage: `Is.EqualTo([1, 2, 3])`.
+* `Is.EquivalentTo<T>(T[])` generic array overload on `Is`, enabling collection expression usage: `Is.EquivalentTo([1, 2, 3])`.
 * `using (Assert.EnterMultipleScope())` for multiple assertion scopes, superseding `Assert.Multiple`.
 
 ## Requirements
@@ -37,6 +38,13 @@ public class SampleTests
     {
         var data = new[] { 1, 2, 3 };
         Assert.That(data, Is.EqualTo([1, 2, 3]));
+    }
+    
+    [Test]
+    public void ArrayEquivalence_UsesPolyfilledOverload()
+    {
+        var data = new[] { 1, 2, 3 };
+        Assert.That(data, Is.EquivalentTo([1, 2, 3]));
     }
 
     [Test]
