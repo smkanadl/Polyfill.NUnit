@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Polyfill.NUnit lets you cross-target legacy frameworks (e.g. netcoreapp3.1, net5.0) while beginning
+Polyfill.NUnit lets you cross-target legacy frameworks (e.g. netstandard2.0, netcoreapp3.1, net5.0) while beginning
 to use selected features that NUnit 4 introduces. NUnit 4 raises its minimum supported target frameworks
 and will never support net5.0, so this library provides a transitional window:
 Keep older TFMs in your multi-target matrix for maintenance while adopting newer, more expressive NUnit syntax.
