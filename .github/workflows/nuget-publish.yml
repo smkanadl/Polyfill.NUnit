@@ -17,16 +17,22 @@ env:
 jobs:
   test:
     name: Build & Test
-    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - uses: actions/checkout@v5
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           global-json-file: global.json
+          dotnet-version: | 
+            3.1.x
+            5.0.x
       - name: Restore
         run: |
           dotnet restore src/Polyfill.NUnit.slnx
@@ -45,6 +51,8 @@ jobs:
 
   pack:
     name: Package
+    permissions:
+      contents: read
     needs: test
     runs-on: ubuntu-latest
     if: github.ref_type == 'branch' && (github.ref_name == 'main' || github.ref_name == 'develop') || github.event_name == 'pull_request'
@@ -62,12 +70,12 @@ jobs:
           dotnet restore src/Polyfill.NUnit.slnx
       - name: Build (Pack)
         run: |
-          dotnet pack src/Polyfill.NUnit.slnx --no-restore -c Release -o ./.artifacts
+          dotnet pack src/Polyfill.NUnit.slnx --no-restore -c Release
       - name: Upload Package Artifact
         uses: actions/upload-artifact@v4
         with:
           name: nupkg
-          path: ./.artifacts/*.nupkg
+          path: ${{ github.workspace }}/build/package/*/*
 
   publish_nuget:
     name: Publish NuGet
@@ -77,12 +85,18 @@ jobs:
     permissions:
       packages: write
       contents: read
+      id-token: write  # enable GitHub OIDC token issuance for this job
     steps:
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
           name: nupkg
-          path: ./.artifacts
+          path: ${{ github.workspace }}
+      - name: NuGet login
+        uses: NuGet/login@v1
+        id: login
+        with:
+            user: smkanadl
       - name: Publish to NuGet
         run: |
-            dotnet nuget push ./.artifacts/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
+            dotnet nuget push ${{ github.workspace }}/*/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --skip-duplicate
