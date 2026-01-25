@@ -8,7 +8,7 @@
     <GitBranch Condition="'$(GitBranch)' == '' ">local</GitBranch>
 
     <VersionPrefix>$(BaseVersion)</VersionPrefix>
-    <VersionSuffix Condition="'$(GitBranch)' != 'master'">$([System.Text.RegularExpressions.Regex]::Replace($(GitBranch), "[^0-9a-zA-Z]+", "-")).$(GitCount)</VersionSuffix>
+    <VersionSuffix Condition="'$(GitBranch)' != 'main'">$([System.Text.RegularExpressions.Regex]::Replace($(GitBranch), "[^0-9a-zA-Z]+", "-")).$(GitCount)</VersionSuffix>
     <Copyright>Copyright © smkanadl 2025-$([System.DateTime]::Now.Year)</Copyright>
 
   </PropertyGroup>
